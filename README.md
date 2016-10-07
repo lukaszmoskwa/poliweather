@@ -33,4 +33,8 @@ The server will be hosted on a raspberry pi.
 
 ##  Client
 
+TODO: The client will be written i C++ using QT.
+
 ##  Web Service
+
+TODO
