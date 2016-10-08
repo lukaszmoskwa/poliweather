@@ -4,7 +4,7 @@ Project for Politecnico di Milano's course Piattaforme Software per la Rete - 20
 
 
 ##  Main schema
-![](http://i.imgur.com/vXn8zwo.png)
+![](http://i.imgur.com/kJozWxv.png)
 
 ##  Server
 
@@ -31,7 +31,7 @@ TODO: Add specific function to request forecast for solar panel weaterboard.
 
 TODO: Add documentation and comments for the code 
 
-The server will be hosted on a raspberry pi.
+The server will be hosted on a raspberry pi, and it will also has a cache to store for a certain time information already requested. In this way, if several solar panel's weatherboard request information from the same location, there won't be an over-request using the api of openweather. 
 
 ##  Client
 
