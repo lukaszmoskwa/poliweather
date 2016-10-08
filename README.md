@@ -28,6 +28,7 @@ In this example, if you make a request to the server passing instead of \<cityna
 It is also possible to request those information from the server using the lat and long parameters.
 
 TODO: Add specific function to request forecast for solar panel weaterboard. 
+
 TODO: Add documentation and comments for the code 
 
 The server will be hosted on a raspberry pi.
