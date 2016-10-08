@@ -14,7 +14,8 @@ def homepage():
 # Viene passato city come parametro all'interno della funzione    
 @app.route("/city/<cityname>")
 def getcitybyname(cityname):
-	try: 
+	cityname = cityname.replace(" ", "")
+	try:
 		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?lang=it&APPID=' + appkey + '&q=' + cityname)
 		return response.read()
 	except urllib2.URLError as e:
