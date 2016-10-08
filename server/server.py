@@ -40,7 +40,7 @@ def getcitybyname3(cityname):
 		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/forecast?lang=it&APPID=' + appkey + '&q=' + cityname)
 		return response.read()
 	except urllib2.URLError as e:
-		return "{\"cod\": 500" 
+		return "{\"cod\": 500}" 
 	 
 
 if __name__ == "__main__":
