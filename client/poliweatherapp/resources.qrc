@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/logo-scritta.png</file>
+        <file>images/logobase2.gif</file>
+        <file>images/settings.png</file>
+        <file>images/language.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>images/snowy.png</file>
+        <file>images/cloudy.png</file>
+        <file>images/rainy.png</file>
+        <file>images/stormy.png</file>
+        <file>images/sunny-cloud.png</file>
+        <file>images/sunny.png</file>
+        <file>images/super-rain.png</file>
+    </qresource>
+</RCC>
