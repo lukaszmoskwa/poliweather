@@ -9,7 +9,7 @@ appkey = "47203e62524b2e776149dffb291c15ad"
 # Definizione di Home page
 @app.route("/")
 def homepage():
-    return render_template("home.html")
+    return render_template("index.html")
 
 # Viene passato city come parametro all'interno della funzione    
 @app.route("/city/<cityname>")
