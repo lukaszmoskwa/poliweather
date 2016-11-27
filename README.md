@@ -39,4 +39,4 @@ TODO: The client will be written i C++ using QT.
 
 ##  Web Service
 
-TODO
+Added a default template to start working with. Actually i won't be using flask to redirect to the template page. I will use instead an Apache2 server apart that will gather information from the server.py
