@@ -78,7 +78,8 @@
         <a class="next" href="#main-slider" data-slide="next"><i class="icon-angle-right"></i></a>
     </section><!--/#main-slider-->
 
-    <section id="check">
+    <!-- INIZIO DELLA SEZIONE DI CHECK -->
+    <section id="check" style="padding-top: 5%;">
         <div class="container">
             <div class="box first">
                 <div class="row">
@@ -89,13 +90,14 @@
                   <div class="row" style="padding-bottom: 7%">
                     <div class="col-sm-10">
                       <div style="padding-left: 10%;">
-                        <input type="text" class="form-control" required="required" placeholder="Name">
+                        <input id="check_weather_label" type="text" class="form-control" required="required" placeholder="Name">
                       </div>
                     </div>
                     <div class="col-sm-2">
-                      CHECK!!
+                      <button id="check_weather_button" type="submit" class="btn btn-danger btn-lg">Check</button>
                     </div>
                   </div>
+                  <div id="show_weather_forecast"></div>
                     <div class="col-md-4 col-sm-6">
                         <div class="center">
                             <i class="icon-apple icon-md icon-color1"></i>
@@ -460,5 +462,20 @@
     <script src="js/jquery.isotope.min.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+
+    <!-- Script per richiedere le informazioni via php -->
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#check_weather_button").click(function(){
+            $contenuto = $("#check_weather_label").val();
+            $.get("http://127.0.0.1:5000/city/Rome", function(data){
+                alert($contenuto);
+                $( "#show_weather_forecast" ).append( data );
+                alert(data);
+            });
+        });
+    });
+    </script>
 </body>
 </html>
