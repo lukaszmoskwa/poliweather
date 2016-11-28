@@ -144,7 +144,9 @@
             </div><!--/.box-->
         </div><!--/.container-->
     </section><!--/#services-->
+    <!-- FINE DELLA SEZIONE DI CHECK -->
 
+    <!-- INIZIO DELLA SEZIONE DI DOCUMENTAZIONE -->
     <section id="documentation">
         <div class="container">
             <div class="box">
@@ -251,7 +253,9 @@
             </div><!--/.box-->
         </div><!--/.container-->
     </section><!--/#portfolio-->
+    <!-- FINE DELLA SEZIONE DI DOCUMENTAZIONE -->
 
+    <!-- INIZIO DELLA SEZIONE DI DOWNLOAD -->
     <section id="download">
         <div class="container">
             <div class="box">
@@ -301,6 +305,8 @@
             </div>
         </div>
     </section><!--/#pricing-->
+        <!-- FINE DELLA SEZIONE DI DOWNLOAD -->
+
 
     <section id="about-us">
         <div class="container">
@@ -464,15 +470,14 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
 
-    <!-- Script per richiedere le informazioni via php -->
+    <!-- Script per richiedere le informazioni in json -->
     <script type="text/javascript">
     $(document).ready(function () {
         $("#check_weather_button").click(function(){
             $contenuto = $("#check_weather_label").val();
-            $.get("http://127.0.0.1:5000/city/Rome", function(data){
-                alert($contenuto);
+            $.get("http://127.0.0.1:5000/city/3/" + $contenuto, function(data){
                 $( "#show_weather_forecast" ).append( data );
-                alert(data);
+
             });
         });
     });
