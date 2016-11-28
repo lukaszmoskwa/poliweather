@@ -39,11 +39,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html"><img style="padding-left:15px;" src="./images/logo-scritta.png" width="130%" height="100%" /></a>
+                    <a class="navbar-brand" href="index.html"><img style="padding-left:15px; height: 90%;" src="./images/logo-scritta.png" width="130%" height="90%" /></a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#main-slider"><i class="icon-home"></i></a></li>
+                        <li class="active"><a href="#main-slider"><!--<i class="icon-home">-->Home</i></a></li>
                         <li><a href="#check">Check</a></li>
                         <li><a href="#documentation">Documentation</a></li>
                         <li><a href="#download">Download</a></li>
@@ -97,7 +97,20 @@
                       <button id="check_weather_button" type="submit" class="btn btn-danger btn-lg">Check</button>
                     </div>
                   </div>
-                  <div id="show_weather_forecast"></div>
+                  <div id="show_weather_forecast">
+                      <div class="row">
+                          <div class="col-md-2">
+                              <div class="center">
+                                  Icona
+                              </div>
+                          </div>
+                          <div class="col-md-2">
+                              <div class="center">
+                                  Nome città
+                              </div>
+                          </div>
+                      </div>
+                  </div>
                     <div class="col-md-4 col-sm-6">
                         <div class="center">
                             <i class="icon-apple icon-md icon-color1"></i>
@@ -470,15 +483,29 @@
     <script src="js/main.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
 
-    <!-- Script per richiedere le informazioni in json -->
+    <!-- Script necessary ot parse informations from the server, passed as JSON -->
     <script type="text/javascript">
     $(document).ready(function () {
         $("#check_weather_button").click(function(){
             $contenuto = $("#check_weather_label").val();
             $.get("http://127.0.0.1:5000/city/3/" + $contenuto, function(data){
-                $( "#show_weather_forecast" ).append( data );
-
+                //$( "#show_weather_forecast" ).append( data );
+                var jsonData = JSON.parse(data);
+                var cityName = jsonData.city.name;
+                var cityCountry = jsonData.city.country;
+                //Retrive the information of NOW
+                var cityTemp = jsonData.list[0].main.temp;
+                var cityHumid = jsonData.list[0].main.humidity;
+                var cityWeather = jsonData.list[0].weather.main;
+                var cityDescription = jsonData.list[0].weather.description;
+                //Loop used to retrive all the data in the list                
+                for (var i = 1; i < jsonData.list.length; i++) {
+                    var remnant = jsonData.list[i].dt;
+                    $("#show_weather_forecast").append(remnant);
+                }
+                //alert(cityName + " " + cityCountry);
             });
+
         });
     });
     </script>
