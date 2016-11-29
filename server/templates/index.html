@@ -99,35 +99,61 @@
                   </div>
                   <!-- Initially empty-->
                   <div id="show_weather_forecast">
-                      <div class="row">
-                      <hr>
-                          <div class="col-md-offset-4 col-md-4">
-                              <div class="center">
-                                  <h3>Nome città, Paese</h3>
-                              </div>
-                          </div>
+                  <hr>
+                  <div class="row">
+                      <div class="col-md-offset-1 col-md-3">
+                        <h3>Icona<br>Icona<br>Icona<br>Icona<br></h3>
                       </div>
-                      <hr>
-                      <div class="row">
-                          <div class="col-md-offset-2 col-md-2">
-                              <div class="center">
-                                  <h3>icona</h3>
+                      <div class="col-md-8">
+                        <hr>
+                          <div class="row">
+                              <div class="col-md-offset-2 col-md-5">
+                                  <div class="center">
+                                      <h3>Nome città, Paese</h3>
+                                  </div>
                               </div>
                           </div>
-                          <div class="col-md-4">
-                            <div class="center">
-                                <h4>Sereno, cielo sereno</h4>
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="center">
-                                <h4>temp<br>humidity<br>wind</h4>
-                            </div>
+                      <hr>
+                          <div class="row">
+                              <div class="col-md-offset-2 col-md-5">
+                                <div class="center">
+                                    <h4>Sereno, cielo sereno</h4>
+                                </div>
+                              </div>
+                              <div class="col-md-5">
+                                <div class="center">
+                                    <h4>temp<br>humidity<br>wind</h4>
+                                </div>
+                              </div>
                           </div>
                           <hr>
                       </div>
-
                   </div>
+                  <div class="row" >
+                      <div class="col-md-offset-1 col-md-3">
+                          <img src="/images/ico/sunny.png" height="15%" width="15%" />
+                      </div>
+                      <div class="col-md-3">
+                          <h4>Sereno ecc</h4>
+                      </div>
+                      <div class="col-md-2">
+                          <h4>15 °C</h4>
+                      </div>
+                      <div class="col-md-2">
+                          <h4>2016 --ad as-d as-a</h4>
+                      </div>
+                  </div>
+                  <div class="row" >
+                      <div class="col-md-offset-1 col-md-3">
+                          <img src="/images/ico/sunny.png" height="15%" width="15%" />
+                      </div>
+                  </div>
+                  <div class="row" >
+                      <div class="col-md-offset-1 col-md-3">
+                          <img src="/images/ico/sunny.png" height="15%" width="15%" />
+                      </div>
+                  </div>
+                  </div><!--show_weather -->
                 </div><!--/.row-->
             </div><!--/.box-->
         </div><!--/.container-->
@@ -480,6 +506,8 @@
                 var cityHumid = jsonData.list[0].main.humidity;
                 var cityWeather = jsonData.list[0].weather[0].main;
                 var cityDescription = jsonData.list[0].weather[0].description;
+                var cityTime = jsonData.list[0].dt_txt;
+                //cityDescription = cityDescription.capitalizeFirstLetter();
                 var cityWind = jsonData.list[0].wind.speed;
                 var cityIcon;
                 if(cityWeather == "Clouds"){
@@ -491,17 +519,43 @@
                 if(cityWeather == "Rain"){
                     cityIcon = "/images/ico/rainy.png";
                 }
-                $("#show_weather_forecast").append('<div class="row"><hr><div class="col-md-offset-4 col-md-4"><div class="center"><h3>'  + cityName +', ' + cityCountry + '</h3></div></div></div><hr><div class="row"><div class="col-md-offset-2 col-md-2"><div class="center"><img src="' + cityIcon + '"></div></div><div class="col-md-4"><div class="center"><h4>' + cityWeather + ', ' + cityDescription+ '</h4></div></div><div class="col-md-4"><div class="center"><h4>Temperature: ' + cityTemp + ' °C<br>Humidity: ' + cityHumid + ' %<br>Wind: ' + cityWind + ' km/h</h4></div></div></div><hr>');
+                if(cityWeather == "Snow"){
+                    cityIcon = "/images/ico/snowy.png";
+                }
+                $("#show_weather_forecast").append('<hr><div class="row"><div class="col-md-offset-1 col-md-3"><img src="'+cityIcon+'" width="80%" height="80%" style="padding: 10%;"/></div><div class="col-md-8"><hr><div class="row"><div class="col-md-offset-2 col-md-5"><div class="center"><h3><b>'+cityName+', '+cityCountry+'</b></h3></div></div><div class="col-md-5"><div class="center"><h4>Time:<br>'+cityTime+'</h4></div></div></div><hr><div class="row"><div class="col-md-offset-2 col-md-5"><div class="center"><h4>'+cityWeather+', '+cityDescription+'</h4></div></div><div class="col-md-5"><div class="center"><h4>Temperature: '+cityTemp+' °C<br>Humidity: '+cityHumid+' %<br>Wind: '+cityWind+' km/h</h4></div></div></div><hr></div></div><hr>');
                 //Loop used to retrive all the data in the list                
                 for (var i = 1; i < jsonData.list.length; i++) {
-                    var remnant = jsonData.list[i].dt;
-                    //$("#show_weather_forecast").append(remnant);
+                    var remnantTemp = Math.round(jsonData.list[i].main.temp - 273.15);
+                    var remnantDescription = jsonData.list[i].weather[0].description;
+                    var remnantTime = jsonData.list[i].dt_txt;
+                    var remnantWeather = jsonData.list[i].weather[0].main;
+                    var remnantIcon;
+                    if(remnantWeather == "Clouds"){
+                        remnantIcon = "/images/ico/cloudy.png";
+                    }
+                    if(remnantWeather == "Clear"){
+                        remnantIcon = "/images/ico/sunny.png";
+                    }
+                    if(remnantWeather == "Rain"){
+                        remnantIcon = "/images/ico/rainy.png";
+                    }
+                    if(remnantWeather == "Snow"){
+                        remnantIcon = "/images/ico/snowy.png";
+                    }
+                    $("#show_weather_forecast").append('<div class="row" ><div class="col-md-offset-1 col-md-3"><img src="'+remnantIcon+'" height="15%" width="15%" /></div><div class="col-md-3"><h4>'+remnantWeather+', '+remnantDescription+'</h4></div><div class="col-md-2"><h4>'+ remnantTemp+' °C</h4></div><div class="col-md-2"><h4>'+remnantTime+'</h4></div></div>');
+
                 }
                 //alert(cityName + " " + cityCountry);
             });
 
         });
     });
+    </script>
+    <script type="text/javascript">
+                //Function to capitalize the first letter of a string
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
     </script>
 </body>
 </html>
