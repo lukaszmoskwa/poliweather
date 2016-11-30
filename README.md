@@ -39,4 +39,9 @@ TODO: The client will be written i C++ using QT.
 
 ##  Web Service
 
-Added a default template to start working with. Actually i won't be using flask to redirect to the template page. I will use instead an Apache2 server apart that will gather information from the server.py
+Added a default template to start working with (Xeon Template). I'm using flask to run the webservice as well
+TODO: Add comments to the code
+
+Screenshot:
+
+![](https://s17.postimg.org/7cbxdcyal/pw_screen.png)
