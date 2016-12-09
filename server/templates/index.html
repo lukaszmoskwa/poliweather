@@ -43,10 +43,13 @@ hr{
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="documentation.html"><img style="padding-left:15px; height: 90%;" src="./images/logo-scritta.png" width="130%" height="90%" /></a>
+                    <!--To make the title and the logo editable, I moved the background of the logo (the moving gif) to css/main.css. To change the name 
+                      from PoliWeather to something else you just need to change the following path with a new one -->
+                    <a class="navbar-brand" href="#"><img style="padding-left:15px; height: 90%;" src="./images/logo-scritta.png" width="130%" height="90%" /></a>
                 </div>
                 <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+                  <!--Main menu in the top-bar (navbar)-->  
+                  <ul class="nav navbar-nav">
                         <li class="active"><a href="#main-slider"><p style="color:white;">Home</p></a></li>
                         <li><a href="#check"><p style="color:white;">Check</p></a></li>
                         <li><a href="#documentation"><p style="color:white;">Documentation</p></a></li>
@@ -58,10 +61,12 @@ hr{
             </div>
         </div>
     </header><!--/#header-->
-
+    
+    <!--Start of the Main Slider - Here you can custom the image and the text of all slides-->
     <section id="main-slider" class="carousel">
         <div class="carousel-inner">
-            <div class="item active">
+          <!-- Every slide is started with a div with th eclass item-->  
+          <div class="item active">
                 <div class="container">
                     <div class="carousel-content">
                         <h1>PoliWeather</h1>
@@ -82,7 +87,7 @@ hr{
         <a class="next" href="#main-slider" data-slide="next"><i class="icon-angle-right"></i></a>
     </section><!--/#main-slider-->
 
-    <!-- INIZIO DELLA SEZIONE DI CHECK -->
+    <!-- Begin of the Check section -->
     <section id="check" style="padding-top: 5%;">
         <div class="container">
             <div class="box first">
@@ -108,9 +113,9 @@ hr{
             </div><!--/.box-->
         </div><!--/.container-->
     </section><!--/#services-->
-    <!-- FINE DELLA SEZIONE DI CHECK -->
+    <!-- End of the Check section-->
 
-    <!-- INIZIO DELLA SEZIONE DI DOCUMENTAZIONE -->
+    <!-- Begin of the Documentation section-->
     <section id="documentation">
         <div class="container">
             <div class="box">
@@ -217,9 +222,9 @@ hr{
             </div><!--/.box-->
         </div><!--/.container-->
     </section><!--/#portfolio-->
-    <!-- FINE DELLA SEZIONE DI DOCUMENTAZIONE -->
+    <!-- End of the Documentation section -->
 
-    <!-- INIZIO DELLA SEZIONE DI DOWNLOAD -->
+    <!-- Begin of the Download section-->
     <section id="download">
         <div class="container">
             <div class="box">
@@ -275,7 +280,7 @@ hr{
             </div>
         </div>
     </section><!--/#pricing-->
-        <!-- FINE DELLA SEZIONE DI DOWNLOAD -->
+        <!-- End of the Download section-->
 
 
     <section id="about-us">
@@ -419,7 +424,7 @@ hr{
             </div><!--/.box-->
         </div><!--/.container-->
     </section><!--/#contact-->
-
+    <!-- Begin of the FOOTER -->
     <footer id="footer">
         <div class="container">
             <div class="row">
@@ -432,7 +437,7 @@ hr{
             </div>
         </div>
     </footer><!--/#footer-->
-
+    <!-- ================================ Begin of the Javascript Section ===================================-->
     <!--<script src="js/jquery.js"></script>-->
     <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -441,7 +446,7 @@ hr{
     <script src="js/main.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- Script necessary ot parse informations from the server, passed as JSON -->
+    <!-- Script necessary to parse informations from the server, passed as JSON -->
     <script type="text/javascript">
     $(document).ready(function () {
         $("#check_weather_button").click(function(){
@@ -450,13 +455,20 @@ hr{
             $.get("http://127.0.0.1:5000/city/3/" + $contenuto, function(data){
                 //$( "#show_weather_forecast" ).append( data );
                 var jsonData = JSON.parse(data);
+                //Retrive the information of the place (as city name and country)
                 var cityName = jsonData.city.name;
                 var cityCountry = jsonData.city.country;
-                //Retrive the information of NOW
+                //Retrive the current weather information.
+                //Temperature (expressed in °C)
                 var cityTemp = Math.round(jsonData.list[0].main.temp - 273.15);
+                //Humidity (expressed in %)
                 var cityHumid = jsonData.list[0].main.humidity;
+                //Current Weather, used later to choose which icon to display
                 var cityWeather = jsonData.list[0].weather[0].main;
+                //Description of the weather.
                 var cityDescription = jsonData.list[0].weather[0].description;
+                //Time of the retrived information. As it takes the forecast information, often it isn't the real current time, 
+                // but the closest in a 3 hour range
                 var cityTime = jsonData.list[0].dt_txt;
                 //cityDescription = cityDescription.capitalizeFirstLetter();
                 var cityWind = jsonData.list[0].wind.speed;
@@ -473,13 +485,19 @@ hr{
                 if(cityWeather == "Snow"){
                     cityIcon = "/images/ico/snowy.png";
                 }
+                //This is the <div> appended to show_weather_forecast. Here are displayed in a styled row all the information gathered before 
                 $("#show_weather_forecast").append('<div class="row"><div class="col-md-offset-1 col-md-3"><img src="'+cityIcon+'" width="80%" height="80%" style="padding: 10%;"/></div><div class="col-md-8"><hr><div class="row" style="background-color: #33485f;"><div class="col-md-offset-2 col-md-5"><div class="center"><h3 style="color:white;"><b>'+cityName+', '+cityCountry+'</b></h3></div></div><div class="col-md-5"><div class="center"><h4 style="color:white;">Time:<br>'+cityTime+'</h4></div></div></div><hr><div class="row"><div class="col-md-offset-2 col-md-5"><div class="center"><h4>'+cityWeather+', '+cityDescription+'</h4></div></div><div class="col-md-5"><div class="center"><h4>Temperature: '+cityTemp+' °C<br>Humidity: '+cityHumid+' %<br>Wind: '+cityWind+' km/h</h4></div></div></div><hr></div></div><div class="row" style="background-color: #33485f;"><div class="col-md-offset-1 col-md-4"><h4 style="color:white;"><b>Next hours/days</b></h4></div></div><hr style="padding-bottom:10px">');
-                //Loop used to retrive all the data in the list                
+                //Loop used to retrive all the data needed in the list of next hours/days                
                 for (var i = 1; i < jsonData.list.length; i++) {
+                    //Temperature
                     var remnantTemp = Math.round(jsonData.list[i].main.temp - 273.15);
+                    //Description
                     var remnantDescription = jsonData.list[i].weather[0].description;
+                    //Time (hours/mins)
                     var remnantTime = jsonData.list[i].dt_txt;
+                    //Weather
                     var remnantWeather = jsonData.list[i].weather[0].main;
+                    //If cases for the icon choice. Modify the following paths change the icons displayed
                     var remnantIcon;
                     if(remnantWeather == "Clouds"){
                         remnantIcon = "/images/ico/cloudy.png";
@@ -493,26 +511,26 @@ hr{
                     if(remnantWeather == "Snow"){
                         remnantIcon = "/images/ico/snowy.png";
                     }
+                    //This is the <div> appended to the show_weather_forecast div, and display all the information gathered before in a row
                     $("#show_weather_forecast").append('<div class="row" ><div class="col-md-offset-1 col-md-3"><img src="'+remnantIcon+'" height="15%" width="15%" /></div><div class="col-md-3"><h4>'+remnantWeather+', '+remnantDescription+'</h4></div><div class="col-md-2"><h4>'+ remnantTemp+' °C</h4></div><div class="col-md-2"><h4>'+remnantTime+'</h4></div></div>');
 
                 }
-                //alert(cityName + " " + cityCountry);
             });
 
         });
     });
     </script>
-<script>
+    <!--This script is used to prevent the default behaviour of the Enter key (keycode 13 in JS) and make it perform a click action on press -->
+    <script>
   $(document).on("keyup", function(e){
     e.preventDefault();
     if(e.keyCode == 13){
        $("#check_weather_button").click();
     }
-    //return false;
   });
 </script>
-    <script type="text/javascript">
-                //Function to capitalize the first letter of a string - NOT WORKING :(
+  <script type="text/javascript">
+        //Function to capitalize the first letter of a string - NOT WORKING :(
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
