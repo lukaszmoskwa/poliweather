@@ -70,18 +70,18 @@ void MainWindow::updateWindow(){
     ui->listWidget->clear();
 
     // Name of the city and country
-    ui->fullPlaceName->setText(readerWeather->fetch("city", "name") + ", " + readerWeather->fetch("city", "country"));
-
+    ui->fullPlaceName->setText(readerWeather->decode("city.name") + ", " + readerWeather->decode("city.country"));
     // Icon of the current weather status
 
-    ui->weatherIconMain->setPixmap(getIcona(readerWeather->fetch("list","weather","main",0)));
+    qDebug() << readerWeather->decodeList("list","dt")[0] << "\n";
+    ui->weatherIconMain->setPixmap(getIcona(readerWeather->decodeList("list")[0]));
     ui->weatherIconMain->setScaledContents(true);
 
-    QString description = readerWeather->fetch("list", "weather","description", 0);
+    QString description = readerWeather->decode("list.weather.description");
     description[0] = description.at(0).toTitleCase();
     ui->Description->setText(description);
-    ui->Umidity->setText("Humidity: " + readerWeather->fetchOther("list", "main","humidity", 0) + "%");
-    ui->Wind->setText("Wind speed: " + readerWeather->fetchOther("list", "wind","speed", 0) + " km/h");
+    ///ui->Umidity->setText("Humidity: " + readerWeather->fetchOther("list", "main","humidity", 0) + "%");
+    ///ui->Wind->setText("Wind speed: " + readerWeather->fetchOther("list", "wind","speed", 0) + " km/h");
 
 
     /* Temperature can be in celsius or kelvin
@@ -89,13 +89,13 @@ void MainWindow::updateWindow(){
 
     if(true){
         std::ostringstream strs;
-        strs << std::setprecision(3) << readerWeather->fetchDouble("main", "temp") - 273.15;
+        ///strs << std::setprecision(3) << readerWeather->fetchDouble("main", "temp") - 273.15;
         QString tempFetched = QString::fromUtf8(strs.str().c_str());
-        ui->Temperature->setText("Temperature: " + tempFetched + " °C");
+        ///ui->Temperature->setText("Temperature: " + tempFetched + " °C");
     }
     else{
-        QString tempFetched = readerWeather->fetch("main", "temp");
-        ui->Temperature->setText("Temperature: " + tempFetched + " °C");
+        ///QString tempFetched = readerWeather->fetch("main", "temp");
+        ///ui->Temperature->setText("Temperature: " + tempFetched + " °C");
     }
 
     /*  Function to retrieve the informations about the forecast in next few hours/days
@@ -119,8 +119,8 @@ void MainWindow::updateWindow(){
     /****/
     for(int i=0;i<10;i++){
         QListWidgetItem* item = new QListWidgetItem();
-        item->setIcon(getIcona(readerForecast->fetch("list", "weather", "main", i)));
-        item->setText(readerForecast->fetch("list", "weather", "description", i));
+        ///item->setIcon(getIcona(readerForecast->fetch("list", "weather", "main", i)));
+        ///item->setText(readerForecast->fetch("list", "weather", "description", i));
         ui->listWidget->addItem(item);
     }
 

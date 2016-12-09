@@ -11,6 +11,7 @@
 #include <QJsonObject>
 #include <QVariantMap>
 #include <QString>
+#include <boost/property_tree/json_parser.hpp>
 //#include "mainwindow.h"
 
 class MainWindow;
@@ -21,12 +22,8 @@ class JsonReader : public QObject
 public:
     JsonReader(MainWindow* uiWindow, std::string url);
     virtual ~JsonReader() {};
-    QString fetch(QString key);
-    QString fetch(QString key1, QString key2);
-    QString fetch(QString key1, QString key2, int index);
-    QString fetch(QString key1, QString key2, QString key3, int index);
-    QString fetchOther(QString key1, QString key2, QString key3, int index);
-    double fetchDouble(QString key1, QString key2);
+    QString decode(std::string richiesta);
+    std::vector<std::string> decodeList(std::string richiestaLista, std::string richiestaStringa);
 signals:
 public slots:
     void replyFinished(QNetworkReply *reply);
@@ -34,6 +31,7 @@ private:
     QNetworkAccessManager *manager;
     QVariantMap map;
     MainWindow* uiWindow;
+    boost::property_tree::ptree tree;
 };
 
 #endif // JSONREADER_H

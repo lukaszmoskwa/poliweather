@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # API KEY 47203e62524b2e776149dffb291c15ad
-import urllib2, json
+import urllib2, json, pprint
 from flask import Flask, render_template, send_from_directory
 app = Flask(__name__)
 
@@ -26,10 +26,16 @@ def send_image(path):
 def send_fonts(path):
     return send_from_directory("templates/fonts", path)
 
+# Definizione di Docs page
+@app.route("/<parame>")
+def docspage(parame):
+    if parame == "documentation.html":
+        return render_template("documentation.html")
+
 # Definizione di Home page
 @app.route("/")
 def homepage():
-    return render_template("index.html")
+	return render_template("index.html")
 
 # Viene passato city come parametro all'interno della funzione
 @app.route("/city/<cityname>")
@@ -58,6 +64,12 @@ def getcitybyname3(cityname):
 	cityname = cityname.replace(" ", "")
 	try:
 		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/forecast?lang=it&APPID=' + appkey + '&q=' + cityname)
+		#json_data = json.load(response)
+		#json_fixed['cityName'] = json_data['city']['name']
+		#json_fixed['cityCountry'] = json_data['city']['country']
+		#json_fixed['cityTemp'] = json_data['list'][0]['main']['temp']
+		#pprint.pprint(json_fixed['cityName'])
+		#pprint.pprint(json_data['city']['name'])
 		return response.read()
 	except urllib2.URLError as e:
 		return "{\"cod\": 500}"
