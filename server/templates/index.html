@@ -30,7 +30,12 @@
 hr{
     padding-right: : 5px;
     margin: 0px;    
-  }
+}
+.forecast_with_scroll{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 500px;
+}
 </style>
 <body data-spy="scroll" data-target="#navbar" data-offset="0">
     <header id="header" role="banner">
@@ -88,7 +93,7 @@ hr{
     </section><!--/#main-slider-->
 
     <!-- Begin of the Check section -->
-    <section id="check" style="padding-top: 5%;">
+    <section id="check">
         <div class="container">
             <div class="box first">
                 <div class="row">
@@ -107,6 +112,7 @@ hr{
                     </div>
                   </div>
                   <!-- Initially empty-->
+                  <div id="show_weather_current"></div>
                   <div id="show_weather_forecast">
                   </div><!--show_weather -->
                 </div><!--/.row-->
@@ -450,28 +456,30 @@ hr{
     <script type="text/javascript">
     $(document).ready(function () {
         $("#check_weather_button").click(function(){
+            //Empty is the function necessary to erase all the content of the div to show it clear every time the user makes a new request
+            $("#show_weather_current").empty();
             $("#show_weather_forecast").empty();
             $contenuto = $("#check_weather_label").val();
-            $.get("http://127.0.0.1:5000/city/3/" + $contenuto, function(data){
+            $.get("http://127.0.0.1:5000/app/city/" + $contenuto, function(data){
                 //$( "#show_weather_forecast" ).append( data );
                 var jsonData = JSON.parse(data);
                 //Retrive the information of the place (as city name and country)
-                var cityName = jsonData.city.name;
-                var cityCountry = jsonData.city.country;
+                var cityName = jsonData.cityName;
+                var cityCountry = jsonData.country;
                 //Retrive the current weather information.
                 //Temperature (expressed in °C)
-                var cityTemp = Math.round(jsonData.list[0].main.temp - 273.15);
+                var cityTemp = Math.round(jsonData.temp[0] - 273.15);
                 //Humidity (expressed in %)
-                var cityHumid = jsonData.list[0].main.humidity;
+                var cityHumid = jsonData.humidity;
                 //Current Weather, used later to choose which icon to display
-                var cityWeather = jsonData.list[0].weather[0].main;
+                var cityWeather = jsonData.weather[0];
                 //Description of the weather.
-                var cityDescription = jsonData.list[0].weather[0].description;
+                var cityDescription = jsonData.description[0];
                 //Time of the retrived information. As it takes the forecast information, often it isn't the real current time, 
                 // but the closest in a 3 hour range
-                var cityTime = jsonData.list[0].dt_txt;
+                var cityTime = jsonData.time[0];
                 //cityDescription = cityDescription.capitalizeFirstLetter();
-                var cityWind = jsonData.list[0].wind.speed;
+                var cityWind = jsonData.wind;
                 var cityIcon;
                 if(cityWeather == "Clouds"){
                     cityIcon = "/images/ico/cloudy.png";
@@ -486,17 +494,17 @@ hr{
                     cityIcon = "/images/ico/snowy.png";
                 }
                 //This is the <div> appended to show_weather_forecast. Here are displayed in a styled row all the information gathered before 
-                $("#show_weather_forecast").append('<div class="row"><div class="col-md-offset-1 col-md-3"><img src="'+cityIcon+'" width="80%" height="80%" style="padding: 10%;"/></div><div class="col-md-8"><hr><div class="row" style="background-color: #33485f;"><div class="col-md-offset-2 col-md-5"><div class="center"><h3 style="color:white;"><b>'+cityName+', '+cityCountry+'</b></h3></div></div><div class="col-md-5"><div class="center"><h4 style="color:white;">Time:<br>'+cityTime+'</h4></div></div></div><hr><div class="row"><div class="col-md-offset-2 col-md-5"><div class="center"><h4>'+cityWeather+', '+cityDescription+'</h4></div></div><div class="col-md-5"><div class="center"><h4>Temperature: '+cityTemp+' °C<br>Humidity: '+cityHumid+' %<br>Wind: '+cityWind+' km/h</h4></div></div></div><hr></div></div><div class="row" style="background-color: #33485f;"><div class="col-md-offset-1 col-md-4"><h4 style="color:white;"><b>Next hours/days</b></h4></div></div><hr style="padding-bottom:10px">');
+                $("#show_weather_current").append('<div class="row"><div class="col-md-offset-1 col-md-3"><img src="'+cityIcon+'" width="80%" height="80%" style="padding: 10%;"/></div><div class="col-md-8"><hr><div class="row" style="background-color: #33485f;"><div class="col-md-offset-2 col-md-5"><div class="center"><h3 style="color:white;"><b>'+cityName+', '+cityCountry+'</b></h3></div></div><div class="col-md-5"><div class="center"><h4 style="color:white;">Time:<br>'+cityTime+'</h4></div></div></div><hr><div class="row"><div class="col-md-offset-2 col-md-5"><div class="center"><h4>'+cityWeather+', '+cityDescription+'</h4></div></div><div class="col-md-5"><div class="center"><h4>Temperature: '+cityTemp+' °C<br>Humidity: '+cityHumid+' %<br>Wind: '+cityWind+' km/h</h4></div></div></div><hr></div></div><div class="row" style="background-color: #33485f;"><div class="col-md-offset-1 col-md-4"><h4 style="color:white;"><b>Next hours/days</b></h4></div></div><hr style="padding-bottom:10px">');
                 //Loop used to retrive all the data needed in the list of next hours/days                
-                for (var i = 1; i < jsonData.list.length; i++) {
+                for (var i = 1; i < 36; i++) {
                     //Temperature
-                    var remnantTemp = Math.round(jsonData.list[i].main.temp - 273.15);
+                    var remnantTemp = Math.round(jsonData.temp[i] - 273.15);
                     //Description
-                    var remnantDescription = jsonData.list[i].weather[0].description;
+                    var remnantDescription = jsonData.description[i];
                     //Time (hours/mins)
-                    var remnantTime = jsonData.list[i].dt_txt;
+                    var remnantTime = jsonData.time[i];
                     //Weather
-                    var remnantWeather = jsonData.list[i].weather[0].main;
+                    var remnantWeather = jsonData.weather[i];
                     //If cases for the icon choice. Modify the following paths change the icons displayed
                     var remnantIcon;
                     if(remnantWeather == "Clouds"){
@@ -512,7 +520,7 @@ hr{
                         remnantIcon = "/images/ico/snowy.png";
                     }
                     //This is the <div> appended to the show_weather_forecast div, and display all the information gathered before in a row
-                    $("#show_weather_forecast").append('<div class="row" ><div class="col-md-offset-1 col-md-3"><img src="'+remnantIcon+'" height="15%" width="15%" /></div><div class="col-md-3"><h4>'+remnantWeather+', '+remnantDescription+'</h4></div><div class="col-md-2"><h4>'+ remnantTemp+' °C</h4></div><div class="col-md-2"><h4>'+remnantTime+'</h4></div></div>');
+                    $("#show_weather_forecast").append('<div class="row" ><div class="col-md-offset-1 col-md-3"><img src="'+remnantIcon+'" height="15%" width="15%" /></div><div class="col-md-3"><h4>'+remnantWeather+', '+remnantDescription+'</h4></div><div class="col-md-2"><h4>'+ remnantTemp+' °C</h4></div><div class="col-md-2"><h4>'+remnantTime+'</h4></div></div>').addClass("forecast_with_scroll");
 
                 }
             });
