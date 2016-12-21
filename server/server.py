@@ -64,13 +64,31 @@ def getcitybyname3(cityname):
 	cityname = cityname.replace(" ", "")
 	try:
 		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/forecast?lang=it&APPID=' + appkey + '&q=' + cityname)
-		#json_data = json.load(response)
-		#json_fixed['cityName'] = json_data['city']['name']
-		#json_fixed['cityCountry'] = json_data['city']['country']
-		#json_fixed['cityTemp'] = json_data['list'][0]['main']['temp']
-		#pprint.pprint(json_fixed['cityName'])
-		#pprint.pprint(json_data['city']['name'])
 		return response.read()
+	except urllib2.URLError as e:
+		return "{\"cod\": 500}"
+
+@app.route("/app/city/<cityname>")
+def getcitybynameapp(cityname):
+	cityname = cityname.replace(" ", "")
+	try:
+		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/forecast?lang=it&APPID=' + appkey + '&q=' + cityname)
+		json_data = json.load(response)
+		json_fixed = {}
+		json_fixed['cityName'] = json_data['city']['name']
+		json_fixed['country'] = json_data['city']['country']
+		json_fixed['humidity'] = json_data['list'][0]['main']['humidity']
+		json_fixed['wind'] = json_data['list'][0]['wind']['speed']
+		json_fixed['temp'] = []
+		json_fixed['weather'] = []
+		json_fixed['description'] = []
+		json_fixed['time'] = []
+		for x in range (0, 36):
+			json_fixed['temp'].append(json_data['list'][(x)]['main']['temp'])
+			json_fixed['weather'].append(json_data['list'][(x)]['weather'][0]['main'])
+			json_fixed['description'].append(json_data['list'][(x)]['weather'][0]['description'])
+			json_fixed['time'].append(json_data['list'][(x)]['dt_txt'])
+		return json.dumps(json_fixed) 
 	except urllib2.URLError as e:
 		return "{\"cod\": 500}"
 
