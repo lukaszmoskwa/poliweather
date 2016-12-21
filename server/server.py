@@ -6,6 +6,9 @@ app = Flask(__name__)
 
 appkey = "47203e62524b2e776149dffb291c15ad"
 
+global cache
+cache = []
+
 #Added route to see js files from flask
 @app.route("/js/<path:path>")
 def send_js(path):
@@ -83,14 +86,19 @@ def getcitybynameapp(cityname):
 		json_fixed['weather'] = []
 		json_fixed['description'] = []
 		json_fixed['time'] = []
-		for x in range (0, 36):
+		for x in range (0, 34):
 			json_fixed['temp'].append(json_data['list'][(x)]['main']['temp'])
 			json_fixed['weather'].append(json_data['list'][(x)]['weather'][0]['main'])
 			json_fixed['description'].append(json_data['list'][(x)]['weather'][0]['description'])
 			json_fixed['time'].append(json_data['list'][(x)]['dt_txt'])
+		cache.append(json_fixed)
 		return json.dumps(json_fixed) 
 	except urllib2.URLError as e:
 		return "{\"cod\": 500}"
+
+@app.route("/cache")
+def showcache():
+	return json.dumps(cache)
 
 
 if __name__ == "__main__":
