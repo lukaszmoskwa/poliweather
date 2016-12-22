@@ -14,16 +14,18 @@ JsonReader::JsonReader(MainWindow* uiWindow, std::string url)
     manager->get(QNetworkRequest(QUrl(url.c_str())));
 }
 
-QString JsonReader::decode(std::string richiesta){
-    return QString(tree.get<std::string>(richiesta).c_str());
+QString JsonReader::decode(std::string request){
+    return QString(tree.get<std::string>(request).c_str());
 }
 
-std::vector<std::string> JsonReader::decodeList(std::string richiestaLista, std::string richiestaStringa){
-    std::vector<QString> vettore = {};
-    for(boost::property_tree::ptree stringa : tree.get_child(richiestaLista)){
-        vettore.push_back(stringa.second.get<std::string>(richiestaStringa));
+QString JsonReader::decodeList(std::string request, int index){
+    std::vector<std::string> dataVector = {};
+    BOOST_FOREACH(boost::property_tree::ptree::value_type &v, tree.get_child(request)) {
+           // The data function is used to access the data stored in a node
+        dataVector.push_back(v.second.data());
     }
-    return vettore;
+    return QString(dataVector.at(index).c_str());
+    //return QString(tree.get<std::string>(request, index).c_str());
 }
 
 void JsonReader::replyFinished(QNetworkReply *reply){

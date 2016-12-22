@@ -49,6 +49,10 @@ QPixmap MainWindow::getIcona(QString stringa){
         QPixmap pixCloudy(":/icons/images/rainy.png");
         return pixCloudy;
     }
+    if(stringa == "Snow"){
+        QPixmap pixSnow(":/icons/images/snowy.png");
+        return pixSnow;
+    }
     else{
         QPixmap noPix(":/images/images/setting.png");
         return noPix;
@@ -58,9 +62,7 @@ QPixmap MainWindow::getIcona(QString stringa){
 
 void MainWindow::on_pushButton_clicked()
 {
-    readerWeather = new JsonReader(this, "http://localhost:5000/city/3/" + ui->lineEdit->text().toStdString());
-    //readerForecast = new JsonReader(this, "http://localhost:5000/city/3/" + ui->lineEdit->text().toStdString());
-
+    readerWeather = new JsonReader(this, "http://localhost:5000/app/city/" + ui->lineEdit->text().toStdString());
 }
 
 void MainWindow::updateWindow(){
@@ -70,18 +72,21 @@ void MainWindow::updateWindow(){
     ui->listWidget->clear();
 
     // Name of the city and country
-    ui->fullPlaceName->setText(readerWeather->decode("city.name") + ", " + readerWeather->decode("city.country"));
+    ui->fullPlaceName->setText(readerWeather->decode("cityName") + ", " + readerWeather->decode("country"));
     // Icon of the current weather status
 
-    qDebug() << readerWeather->decodeList("list","dt")[0] << "\n";
-    ui->weatherIconMain->setPixmap(getIcona(readerWeather->decodeList("list")[0]));
+    //qDebug() << readerWeather->decodeList("list","dt")[0] << "\n";
+    ui->weatherIconMain->setPixmap(getIcona(readerWeather->decodeList("weather",0)));
     ui->weatherIconMain->setScaledContents(true);
 
-    QString description = readerWeather->decode("list.weather.description");
+    QString description = readerWeather->decodeList("description", 0);
     description[0] = description.at(0).toTitleCase();
     ui->Description->setText(description);
-    ///ui->Umidity->setText("Humidity: " + readerWeather->fetchOther("list", "main","humidity", 0) + "%");
-    ///ui->Wind->setText("Wind speed: " + readerWeather->fetchOther("list", "wind","speed", 0) + " km/h");
+    ui->Umidity->setText("Humidity: " + readerWeather->decode("humidity") + "%");
+    std::ostringstream windstream;
+    windstream << std::setprecision(3) << readerWeather->decode("wind").toFloat();
+    QString windFetched = QString::fromUtf8(windstream.str().c_str());
+    ui->Wind->setText("Wind speed: " + windFetched  + " km/h");
 
 
     /* Temperature can be in celsius or kelvin
@@ -89,9 +94,9 @@ void MainWindow::updateWindow(){
 
     if(true){
         std::ostringstream strs;
-        ///strs << std::setprecision(3) << readerWeather->fetchDouble("main", "temp") - 273.15;
+        strs << std::setprecision(3) << readerWeather->decodeList("temp", 0).toFloat() - 273.15;
         QString tempFetched = QString::fromUtf8(strs.str().c_str());
-        ///ui->Temperature->setText("Temperature: " + tempFetched + " °C");
+        ui->Temperature->setText("Temperature: " + tempFetched + " °C");
     }
     else{
         ///QString tempFetched = readerWeather->fetch("main", "temp");
@@ -100,8 +105,6 @@ void MainWindow::updateWindow(){
 
     /*  Function to retrieve the informations about the forecast in next few hours/days
      */
-
-
     /*QListWidgetItem* item1 = new QListWidgetItem();
     item1->setIcon(getIcona("Clear"));
     item1->setText("Meteo");
@@ -117,13 +120,22 @@ void MainWindow::updateWindow(){
     ui->listWidget->addItem(item2);
 
     /****/
-    for(int i=0;i<10;i++){
-        QListWidgetItem* item = new QListWidgetItem();
-        ///item->setIcon(getIcona(readerForecast->fetch("list", "weather", "main", i)));
-        ///item->setText(readerForecast->fetch("list", "weather", "description", i));
-        ui->listWidget->addItem(item);
+    if(true){
+        for(int i=0;i<30;i++){
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setIcon(getIcona(readerWeather->decodeList("weather", i)));
+            std::ostringstream temps;
+            temps << std::setprecision(3) << readerWeather->decodeList("temp", i).toFloat() - 273.15;
+            QString tempFetched = QString::fromUtf8(temps.str().c_str());
+            item->setText(readerWeather->decodeList("description", i) + " | " + tempFetched + "°C | " + readerWeather->decodeList("time", i));
+            item->setForeground(Qt::blue);
+            item->setBackground(Qt::white);
+            ui->listWidget->addItem(item);
+        }
     }
-
+    else {
+        ///alt
+    }
 
     /****/
 
