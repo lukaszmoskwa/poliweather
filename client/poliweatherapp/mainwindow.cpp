@@ -9,30 +9,48 @@
 #include <QListWidgetItem>
 #include <QSize>
 #include <unistd.h>
+#include <QPoint>
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
     {
-        spazi = new QString("  ");
         ui->setupUi(this);
         ui->logoLabel2->setScaledContents(true);
         QMovie* logoGIF = new QMovie(":/images/images/logobase2.gif");
         ui->logoLabel1->setScaledContents(true);
         ui->logoLabel2->setMovie(logoGIF);
         logoGIF->start();
-        //QLabel* labello = new QLabel();
-        //labello->setPixmap(getIcona("Clear"));
-        //QAction* azione = new QAction(this);
-        //QIcon* icona = new QIcon();
-        //icona->addPixmap(getIcona("Clear"));
-        //azione->setIcon(*icona);
+        setContextMenuPolicy(Qt::CustomContextMenu);
+
+        tempUnit = 0;
+
+        menuSettings = new QMenu();
+        QAction* setkelvin_menu = menuSettings->addAction("Set to Kelvin");
+        QAction* setcelsius_menu = menuSettings->addAction("Set to Celsius");
+        connect(setkelvin_menu, SIGNAL(triggered()), this, SLOT(set_kelvin()));
+        connect(setcelsius_menu, SIGNAL(triggered()), this, SLOT(set_celsius()));
+
     }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_filters_clicked(){
+
+    QPoint point = ui->bottomWidget->pos();
+    menuSettings->popup(mapToGlobal(point));
+}
+
+void MainWindow::set_celsius(){
+    tempUnit = 0;
+}
+
+void MainWindow::set_kelvin(){
+    tempUnit = 1;
 }
 
 QPixmap MainWindow::getIcona(QString stringa){
@@ -73,6 +91,9 @@ void MainWindow::updateWindow(){
 
     // Name of the city and country
     ui->fullPlaceName->setText(readerWeather->decode("cityName") + ", " + readerWeather->decode("country"));
+    ui->fullPlaceName->setAlignment(Qt::AlignCenter);
+
+    spacing =  "   ";
     // Icon of the current weather status
 
     //qDebug() << readerWeather->decodeList("list","dt")[0] << "\n";
@@ -81,61 +102,52 @@ void MainWindow::updateWindow(){
 
     QString description = readerWeather->decodeList("description", 0);
     description[0] = description.at(0).toTitleCase();
-    ui->Description->setText(description);
-    ui->Umidity->setText("Humidity: " + readerWeather->decode("humidity") + "%");
+    ui->Description->setText(spacing + description);
+    ui->Umidity->setText(spacing + "Humidity: " + readerWeather->decode("humidity") + "%");
     std::ostringstream windstream;
     windstream << std::setprecision(3) << readerWeather->decode("wind").toFloat();
     QString windFetched = QString::fromUtf8(windstream.str().c_str());
-    ui->Wind->setText("Wind speed: " + windFetched  + " km/h");
+    ui->Wind->setText(spacing + "Wind speed: " + windFetched  + " km/h");
 
 
     /* Temperature can be in celsius or kelvin
     To chose, press the options button */
-
-    if(true){
+    QString tempFetched;
+    if(tempUnit == 0){
         std::ostringstream strs;
         strs << std::setprecision(3) << readerWeather->decodeList("temp", 0).toFloat() - 273.15;
-        QString tempFetched = QString::fromUtf8(strs.str().c_str());
-        ui->Temperature->setText("Temperature: " + tempFetched + " °C");
+        tempFetched = QString::fromUtf8(strs.str().c_str());
+        ui->Temperature->setText(spacing + "Temperature: " + tempFetched + " °C");
     }
     else{
-        ///QString tempFetched = readerWeather->fetch("main", "temp");
-        ///ui->Temperature->setText("Temperature: " + tempFetched + " °C");
+        std::ostringstream strs;
+        strs << std::setprecision(3) << readerWeather->decodeList("temp", 0).toFloat();
+        tempFetched =  QString::fromUtf8(strs.str().c_str());
+        ui->Temperature->setText(spacing + "Temperature: " + tempFetched + " K");
     }
 
     /*  Function to retrieve the informations about the forecast in next few hours/days
      */
-    /*QListWidgetItem* item1 = new QListWidgetItem();
-    item1->setIcon(getIcona("Clear"));
-    item1->setText("Meteo");
-    item1->setSizeHint(QSize((ui->listWidget->width()),(ui->listWidget->height()/4)));
-    QListWidgetItem* item2 = new QListWidgetItem();
-    QIcon* iconaRed = new QIcon(getIcona("Clouds"));
-    iconaRed->pixmap(QSize(80,80));
-    item2->setIcon(*iconaRed);
-    item2->setText("Meteo2");
-    item2->setSizeHint(QSize((ui->listWidget->width()),(ui->listWidget->height()/4)));
-
-    ui->listWidget->addItem(item1);
-    ui->listWidget->addItem(item2);
-
-    /****/
-    if(true){
-        for(int i=0;i<30;i++){
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setIcon(getIcona(readerWeather->decodeList("weather", i)));
+    for(int i=0;i<30;i++){
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setIcon(getIcona(readerWeather->decodeList("weather", i)));
+        QString tempFetched;
+        if(tempUnit == 0){
             std::ostringstream temps;
             temps << std::setprecision(3) << readerWeather->decodeList("temp", i).toFloat() - 273.15;
-            QString tempFetched = QString::fromUtf8(temps.str().c_str());
-            item->setText(readerWeather->decodeList("description", i) + " | " + tempFetched + "°C | " + readerWeather->decodeList("time", i));
-            item->setForeground(Qt::blue);
-            item->setBackground(Qt::white);
-            ui->listWidget->addItem(item);
+            tempFetched = QString::fromUtf8(temps.str().c_str()) + "°C | ";
         }
+        else {
+            std::ostringstream temps;
+            temps << std::setprecision(3) << readerWeather->decodeList("temp", i).toFloat();
+            tempFetched = QString::fromUtf8(temps.str().c_str()) + "K | ";
+        }
+        item->setText(readerWeather->decodeList("description", i) + " | " + tempFetched + readerWeather->decodeList("time", i));
+        item->setForeground(Qt::black);
+        item->setBackground(Qt::white);
+        ui->listWidget->addItem(item);
     }
-    else {
-        ///alt
-    }
+
 
     /****/
 

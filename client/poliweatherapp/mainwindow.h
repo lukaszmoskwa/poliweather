@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QPixmap>
 #include <QString>
+#include <QMenuBar>
+#include <QMenu>
 
 //#include "jsonreader.h"
 
@@ -25,12 +27,18 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void on_filters_clicked();
+    void set_celsius();
+    void set_kelvin();
 
 private:
     Ui::MainWindow* ui;
     JsonReader* readerWeather;
     JsonReader* readerForecast;
-    QString* spazi;
+    QString spacing;
+    int tempUnit;
+    QMenu* menuSettings;
+
 };
 
 #endif // MAINWINDOW_H
