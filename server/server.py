@@ -9,6 +9,11 @@ appkey = "47203e62524b2e776149dffb291c15ad"
 global cache
 cache = []
 
+#Added route to see files included in the download folder
+@app.route("/download/<path:path>")
+def send_file(path):
+    return send_from_directory("templates/download", path)
+
 #Added route to see js files from flask
 @app.route("/js/<path:path>")
 def send_js(path):
