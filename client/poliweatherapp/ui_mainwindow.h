@@ -58,7 +58,6 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *filters;
     QLabel *emptyLabel;
-    QPushButton *options;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -140,7 +139,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 358, 278));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 358, 283));
         listWidget = new QListWidget(scrollAreaWidgetContents);
         listWidget->setObjectName(QStringLiteral("listWidget"));
         listWidget->setGeometry(QRect(0, 1, 361, 291));
@@ -243,7 +242,7 @@ public:
         filters->setMinimumSize(QSize(30, 30));
         filters->setMaximumSize(QSize(30, 30));
         QIcon icon;
-        icon.addFile(QStringLiteral(":/images/images/language.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QStringLiteral(":/images/images/settings.png"), QSize(), QIcon::Normal, QIcon::Off);
         filters->setIcon(icon);
         filters->setIconSize(QSize(24, 24));
         filters->setFlat(true);
@@ -256,19 +255,6 @@ public:
         emptyLabel->setMaximumSize(QSize(16777215, 30));
 
         horizontalLayout->addWidget(emptyLabel);
-
-        options = new QPushButton(bottomWidget);
-        options->setObjectName(QStringLiteral("options"));
-        options->setMinimumSize(QSize(30, 30));
-        options->setMaximumSize(QSize(30, 30));
-        options->setStyleSheet(QStringLiteral(""));
-        QIcon icon1;
-        icon1.addFile(QStringLiteral(":/images/images/settings.png"), QSize(), QIcon::Normal, QIcon::Off);
-        options->setIcon(icon1);
-        options->setIconSize(QSize(24, 24));
-        options->setFlat(true);
-
-        horizontalLayout->addWidget(options);
 
 
         gridLayout->addWidget(bottomWidget, 3, 0, 1, 2);
@@ -283,19 +269,18 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Poli Weather", Q_NULLPTR));
-        weatherIconMain->setText(QApplication::translate("MainWindow", "text", Q_NULLPTR));
+        weatherIconMain->setText(QString());
         fullPlaceName->setText(QApplication::translate("MainWindow", "No Data Loaded", Q_NULLPTR));
-        Description->setText(QApplication::translate("MainWindow", "text", Q_NULLPTR));
-        Wind->setText(QApplication::translate("MainWindow", "text", Q_NULLPTR));
-        Temperature->setText(QApplication::translate("MainWindow", "text", Q_NULLPTR));
-        Umidity->setText(QApplication::translate("MainWindow", "text", Q_NULLPTR));
+        Description->setText(QString());
+        Wind->setText(QString());
+        Temperature->setText(QString());
+        Umidity->setText(QString());
         pushButton->setText(QApplication::translate("MainWindow", "CHECK", Q_NULLPTR));
         pushButton->setShortcut(QApplication::translate("MainWindow", "Return", Q_NULLPTR));
         logoLabel2->setText(QString());
         logoLabel1->setText(QString());
         filters->setText(QString());
         emptyLabel->setText(QString());
-        options->setText(QString());
     } // retranslateUi
 
 };
