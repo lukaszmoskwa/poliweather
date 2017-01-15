@@ -45,16 +45,6 @@ def docspage(parame):
 def homepage():
 	return render_template("index.html")
 
-# Viene passato city come parametro all'interno della funzione
-@app.route("/city/<cityname>")
-def getcitybyname(cityname):
-	cityname = cityname.replace(" ", "")
-	try:
-		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?lang=it&APPID=' + appkey + '&q=' + cityname)
-		return response.read()
-	except urllib2.URLError as e:
-		return "{\"cod\": 500}"
-	#return "city" + cityname
 
 @app.route("/city/<lat>&<lon>")
 def getcitybycoord(lat, lon):
@@ -65,22 +55,13 @@ def getcitybycoord(lat, lon):
 		return "{\"cod\": 500}"
 
 # TODO: Aggiungere la documentazione e i commenti in inglese
-# Prendere le informazioni di forecast (previsione nelle prossime ore fino a 5 giorni)
-
-@app.route("/city/3/<cityname>")
-def getcitybyname3(cityname):
-	cityname = cityname.replace(" ", "")
-	try:
-		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/forecast?lang=it&APPID=' + appkey + '&q=' + cityname)
-		return response.read()
-	except urllib2.URLError as e:
-		return "{\"cod\": 500}"
 
 @app.route("/app/city/<cityname>")
 def getcitybynameapp(cityname):
 	cityname = cityname.replace(" ", "")
 	cache_result = check_cache(cityname)
 	if cache_result is not None:
+		pprint.pprint("Result taken from the cache!")
 		return json.dumps(cache_result)
 	else:
 		try:
@@ -102,18 +83,23 @@ def getcitybynameapp(cityname):
 				json_fixed['time'].append(json_data['list'][(x)]['dt_txt'])
 			json_fixed['cache_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			cache.append(json_fixed)
+			pprint.pprint("Result taken from Openweather server!")
 			return json.dumps(json_fixed) 
 		except urllib2.URLError as e:
 			return "{\"cod\": 500}"
 
 @app.route("/cache")
-def showcache():
+def show_cache():
 	return json.dumps(cache)
 
 def check_cache(request_string):
+	current = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	current_time = time.strptime(current, "%Y-%m-%d %H:%M:%S")
 	for elim in cache:
-		pprint.pprint(time.strptime(elim['cache_time'], "%Y-%m-%d %H:%M:%S")) #+ datetime.timedelta(minutes=30)) #< datetime.datetime.now():
-		cache.remove(elim)
+		check_time = time.strptime(elim['cache_time'], "%Y-%m-%d %H:%M:%S")
+		pprint.pprint(elim['cache_time'] +" "+ request_string)
+		if check_time < current_time and (current_time.tm_min - check_time.tm_min > 30 or current_time.tm_hour > check_time.tm_hour or current_time.tm_wday > check_time.tm_wday):
+			cache.remove(elim)
 	for i in cache:
 		if i['cityName'] == request_string:
 			return i
