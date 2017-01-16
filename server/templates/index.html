@@ -36,6 +36,9 @@ hr{
     overflow-x: hidden;
     height: 500px;
 }
+.carousel-inner{
+    overflow: visible;
+}
 </style>
 <body data-spy="scroll" data-target="#navbar" data-offset="0">
     <header id="header" role="banner">
@@ -71,7 +74,7 @@ hr{
     <section id="main-slider" class="carousel">
         <div class="carousel-inner">
           <!-- Every slide is started with a div with th eclass item-->  
-          <div class="item active">
+          <div class="item">
                 <div class="container">
                     <div class="carousel-content">
                         <h1>PoliWeather</h1>
@@ -79,11 +82,10 @@ hr{
                     </div>
                 </div>
             </div><!--/.item-->
-            <div class="item">
+            <div class="item active">
                 <div class="container">
                     <div class="carousel-content">
-                        <h1>ShapeBootstrap.net</h1>
-                        <p class="lead">Download free but 100% premium quaility twitter Bootstrap based WordPress and HTML themes <br>from shapebootstrap.net</p>
+                        <img src="images/poliweather_showcase.png" height="400px" style="max-height: 100%" />
                     </div>
                 </div>
             </div><!--/.item-->
@@ -239,12 +241,15 @@ hr{
                     <p class="lead">Check our app for all the different platform!</p>
                 </div><!--/.center-->
                 <div class="big-gap"></div>
-                <div class="row">
-                    <div class="col-md-offset-3 col-sm-4" style="align-items: center;">
-                        <a href="download/poliweatherapp" target="_blank"><img src="images/linux-icon.png" width="200px"/></a>
+                <div class="row" style="text-align: center;">
+                    <div class="col-sm-offset-1 col-sm-2">
+                        <a href="download/poliweatherapp" target="_blank"><img src="images/linux-icon.png" width="100%" style="padding-bottom: 20px;" />Ubuntu Version: poliweatherapp.deb</a>
                     </div>
-                    <div class="col-sm-4">
-                        <img src="images/windows-icon.png" width="200px" />
+                    <div class="col-sm-offset-2 col-sm-2">
+                        <a href="download/poliweatherapp" target="_blank"><img src="images/windows-icon.png" width="100%" style="padding-bottom: 20px;" />Windows Version: poliweatherapp.exe</a>
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-2">
+                        <a href="download/poliweatherapp" target="_blank"><img src="images/android-icon.png" width="100%" style="padding-bottom: 20px;" />Android Version: poliweatherapp.apk</a>
                     </div>
                 </div>
             </div>

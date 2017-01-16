@@ -105,5 +105,5 @@ def check_cache(request_string):
 			return i
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
 
