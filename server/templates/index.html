@@ -429,7 +429,7 @@ hr{
             $("#show_weather_current").empty();
             $("#show_weather_forecast").empty();
             $contenuto = $("#check_weather_label").val();
-            $.get("http://127.0.0.1:5000/app/city/" + $contenuto, function(data){
+            $.get("http://www.poliweather.tk/app/city/" + $contenuto, function(data){
                 //$( "#show_weather_forecast" ).append( data );
                 var jsonData = JSON.parse(data);
                 //Retrive the information of the place (as city name and country)
