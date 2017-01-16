@@ -45,13 +45,21 @@ The server will be hosted on a raspberry pi, and it will also have a cache to st
 
 ##  Client
 
-TODO: The client will be written i C++ using QT.
+The client is completely written in C++, using the QT cross platform application framework.
+
+Client screenshot:
+
+![](http://i.imgur.com/Bui5uBc.png)
 
 ##  Web Service
 
 Added a default template to start working with (Xeon Template). I'm using flask to run the webservice as well
 TODO: Add comments to the code
 
-Screenshot:
+Web Service screenshots:
+
+![](http://i.imgur.com/EgxQHKg.png)
+
+---
 
 ![](https://s17.postimg.org/7cbxdcyal/pw_screen.png)
