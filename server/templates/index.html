@@ -133,97 +133,41 @@ hr{
                 </div><!--/.center-->
                 <ul class="portfolio-filter">
                     <li><a class="btn btn-primary active" href="#" data-filter="*">All</a></li>
-                    <li><a class="btn btn-primary" href="#" data-filter=".bootstrap">Bootstrap</a></li>
-                    <li><a class="btn btn-primary" href="#" data-filter=".html">HTML</a></li>
-                    <li><a class="btn btn-primary" href="#" data-filter=".wordpress">Wordpress</a></li>
+                    <li><a class="btn btn-primary" href="#" data-filter=".client">Client</a></li>
+                    <li><a class="btn btn-primary" href="#" data-filter=".website">Website</a></li>
                 </ul><!--/#portfolio-filter-->
                 <ul class="portfolio-items col-4">
-                    <li class="portfolio-item apps">
+                    <li class="portfolio-item apps client">
                         <div class="item-inner">
                             <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item1.jpg" alt="">
+                                <img src="images/poliweatherapp.png" alt="">
                                 <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item1.jpg"><i class="icon-eye-open"></i></a>
+                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/poliweatherapp.png"><i class="icon-eye-open"></i></a>
                                 </div>
                             </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
+                            <h5>Client Screenshot</h5>
                         </div>
                     </li><!--/.portfolio-item-->
-                    <li class="portfolio-item joomla bootstrap">
+                    <li class="portfolio-item joomla website">
                         <div class="item-inner">
                             <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item2.jpg" alt="">
+                                <img src="images/web-screen.png" alt="">
                                 <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item2.jpg"><i class="icon-eye-open"></i></a>
+                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/web-screen.png"><i class="icon-eye-open"></i></a>
                                 </div>
                             </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
+                            <h5>Website Screenshot</h5>
                         </div>
                     </li><!--/.portfolio-item-->
-                    <li class="portfolio-item bootstrap wordpress">
+                    <li class="portfolio-item joomla website">
                         <div class="item-inner">
                             <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item3.jpg" alt="">
+                                <img src="images/pw_screen.png" alt="">
                                 <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item3.jpg"><i class="icon-eye-open"></i></a>
+                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/pw_screen.png"><i class="icon-eye-open"></i></a>
                                 </div>
                             </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
-                        </div>
-                    </li><!--/.portfolio-item-->
-                    <li class="portfolio-item joomla wordpress apps">
-                        <div class="item-inner">
-                            <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item4.jpg" alt="">
-                                <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item4.jpg"><i class="icon-eye-open"></i></a>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
-                        </div>
-                    </li><!--/.portfolio-item-->
-                    <li class="portfolio-item joomla html">
-                        <div class="item-inner">
-                            <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item5.jpg" alt="">
-                                <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item5.jpg"><i class="icon-eye-open"></i></a>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
-                        </div>
-                    </li><!--/.portfolio-item-->
-                    <li class="portfolio-item wordpress html">
-                        <div class="item-inner">
-                            <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item6.jpg" alt="">
-                                <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item6.jpg"><i class="icon-eye-open"></i></a>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
-                        </div>
-                    </li><!--/.portfolio-item-->
-                    <li class="portfolio-item joomla html">
-                        <div class="item-inner">
-                            <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item5.jpg" alt="">
-                                <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item5.jpg"><i class="icon-eye-open"></i></a>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
-                        </div>
-                    </li><!--/.portfolio-item-->
-                    <li class="portfolio-item wordpress html">
-                        <div class="item-inner">
-                            <div class="portfolio-image">
-                                <img src="images/portfolio/thumb/item6.jpg" alt="">
-                                <div class="overlay">
-                                    <a class="preview btn btn-danger" title="Lorem ipsum dolor sit amet" href="images/portfolio/full/item6.jpg"><i class="icon-eye-open"></i></a>
-                                </div>
-                            </div>
-                            <h5>Lorem ipsum dolor sit amet</h5>
+                            <h5>Website Screenshot</h5>
                         </div>
                     </li><!--/.portfolio-item-->
                 </ul>
@@ -429,7 +373,7 @@ hr{
             $("#show_weather_current").empty();
             $("#show_weather_forecast").empty();
             $contenuto = $("#check_weather_label").val();
-            $.get("http://www.poliweather.tk/app/city/" + $contenuto, function(data){
+            $.get("/app/city/" + $contenuto, function(data){
                 //$( "#show_weather_forecast" ).append( data );
                 var jsonData = JSON.parse(data);
                 //Retrive the information of the place (as city name and country)
