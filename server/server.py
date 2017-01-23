@@ -4,10 +4,24 @@ import urllib2, json, pprint, datetime, time
 from flask import Flask, render_template, send_from_directory
 app = Flask(__name__)
 
+# Openweather Appkey for poliweather
 appkey = "47203e62524b2e776149dffb291c15ad"
 
 global cache
 cache = []
+# Function to color a string
+def hilite(string, status, bold):
+    attr = []
+    if status:
+        # green
+        attr.append('32')
+    else:
+        # red
+        attr.append('31')
+    if bold:
+        attr.append('1')
+    return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+
 
 #Added route to see files included in the download folder
 @app.route("/download/<path:path>")
@@ -45,7 +59,7 @@ def docspage(parame):
 def homepage():
 	return render_template("index.html")
 
-
+# Function to retrieve data in full format knowing lat and lon coordinates
 @app.route("/city/<lat>&<lon>")
 def getcitybycoord(lat, lon):
 	try:
@@ -54,14 +68,14 @@ def getcitybycoord(lat, lon):
 	except urllib2.URLError as e:
 		return "{\"cod\": 500}"
 
-# TODO: Aggiungere la documentazione e i commenti in inglese
-
+# Default function to obtain data from openweather and parse them in a easy-to-read format
 @app.route("/app/city/<cityname>")
 def getcitybynameapp(cityname):
 	cityname = cityname.replace(" ", "")
 	cache_result = check_cache(cityname)
 	if cache_result is not None:
-		pprint.pprint("Result taken from the cache!")
+		#pprint.pprint("Result taken from the cache!")
+		print hilite("Result taken from the cache!",1,1)
 		return json.dumps(cache_result)
 	else:
 		try:
@@ -83,15 +97,18 @@ def getcitybynameapp(cityname):
 				json_fixed['time'].append(json_data['list'][(x)]['dt_txt'])
 			json_fixed['cache_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			cache.append(json_fixed)
-			pprint.pprint("Result taken from Openweather server!")
+			#pprint.pprint("Result taken from Openweather server!")
+			print hilite("Result taken from Openweather server!",0,1)
 			return json.dumps(json_fixed) 
 		except urllib2.URLError as e:
 			return "{\"cod\": 500}"
 
+# Function to display the cache when requested
 @app.route("/cache")
 def show_cache():
 	return json.dumps(cache)
 
+# Function to check if the data are already stored in the cache
 def check_cache(request_string):
 	current = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 	current_time = time.strptime(current, "%Y-%m-%d %H:%M:%S")
