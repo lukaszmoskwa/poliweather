@@ -24,8 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
         logoGIF->start();
         setContextMenuPolicy(Qt::CustomContextMenu);
 
+        //Default temperature unit is Celsius
         tempUnit = 0;
 
+        // Creation of the QMenu that will show the choice between Kelvin and Celsius
         menuSettings = new QMenu();
         QAction* setkelvin_menu = menuSettings->addAction("Set to Kelvin");
         QAction* setcelsius_menu = menuSettings->addAction("Set to Celsius");
@@ -39,8 +41,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_filters_clicked(){
 
+//Function used to popup the window for temperature settings
+void MainWindow::on_filters_clicked(){
     QPoint point = ui->bottomWidget->pos();
     menuSettings->popup(mapToGlobal(point));
 }
@@ -53,6 +56,7 @@ void MainWindow::set_kelvin(){
     tempUnit = 1;
 }
 
+//Function that retrieve the correct weather image for every string
 QPixmap MainWindow::getIcona(QString stringa){
 
     if(stringa == "Clear"){
@@ -77,16 +81,16 @@ QPixmap MainWindow::getIcona(QString stringa){
     }
 
 }
-
+// Function executed when the Check button is pushed
 void MainWindow::on_pushButton_clicked()
 {
     readerWeather = new JsonReader(this, "http://localhost:5000/app/city/" + ui->lineEdit->text().toStdString());
 }
 
+// Main update function called to display informations retrieved
 void MainWindow::updateWindow(){
 
-    // Clear the listWidget
-
+    // Clear the listWidged
     ui->listWidget->clear();
 
     // Name of the city and country
@@ -94,12 +98,12 @@ void MainWindow::updateWindow(){
     ui->fullPlaceName->setAlignment(Qt::AlignCenter);
 
     spacing =  "   ";
-    // Icon of the current weather status
 
-    //qDebug() << readerWeather->decodeList("list","dt")[0] << "\n";
+    // Icon of the current weather status
     ui->weatherIconMain->setPixmap(getIcona(readerWeather->decodeList("weather",0)));
     ui->weatherIconMain->setScaledContents(true);
 
+    // Description, Humidity, Temperature and Wind Speed of the current weather
     QString description = readerWeather->decodeList("description", 0);
     description[0] = description.at(0).toTitleCase();
     ui->Description->setText(spacing + description);
@@ -111,7 +115,7 @@ void MainWindow::updateWindow(){
 
 
     /* Temperature can be in celsius or kelvin
-    To chose, press the options button */
+    To chose, press the options button. tempUnit = 0 is for Celsius, tempUnit = 1 for Kelvin */
     QString tempFetched;
     if(tempUnit == 0){
         std::ostringstream strs;
@@ -147,8 +151,5 @@ void MainWindow::updateWindow(){
         item->setBackground(Qt::white);
         ui->listWidget->addItem(item);
     }
-
-
-    /****/
 
 }

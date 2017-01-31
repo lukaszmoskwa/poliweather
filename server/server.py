@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# Server for "Piattaforme Software per la Rete" project
+# To add new commands, functions or redirect to html pages, just create a new
+# @app.route("/something") and define it
+
 # API KEY 47203e62524b2e776149dffb291c15ad
 import urllib2, json, pprint, datetime, time
 from flask import Flask, render_template, send_from_directory
@@ -9,19 +14,19 @@ appkey = "47203e62524b2e776149dffb291c15ad"
 
 global cache
 cache = []
-# Function to color a string
+
+# Function to change the color of a string in output (bash)
 def hilite(string, status, bold):
     attr = []
     if status:
-        # green
+        # Green
         attr.append('32')
     else:
-        # red
+        # Red
         attr.append('31')
     if bold:
         attr.append('1')
     return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
-
 
 #Added route to see files included in the download folder
 @app.route("/download/<path:path>")
@@ -48,12 +53,6 @@ def send_image(path):
 def send_fonts(path):
     return send_from_directory("templates/fonts", path)
 
-# Definizione di Docs page
-@app.route("/<parame>")
-def docspage(parame):
-    if parame == "documentation.html":
-        return render_template("documentation.html")
-
 # Definizione di Home page
 @app.route("/")
 def homepage():
@@ -64,7 +63,7 @@ def homepage():
 def getcitybycoord(lat, lon):
 	try:
 		response = urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?lang=it&APPID=' + appkey + '&lat=' + lat + '&lon=' + lon)
-		return response.read()	
+		return response.read()
 	except urllib2.URLError as e:
 		return "{\"cod\": 500}"
 
@@ -74,7 +73,6 @@ def getcitybynameapp(cityname):
 	cityname = cityname.replace(" ", "")
 	cache_result = check_cache(cityname)
 	if cache_result is not None:
-		#pprint.pprint("Result taken from the cache!")
 		print hilite("Result taken from the cache!",1,1)
 		return json.dumps(cache_result)
 	else:
@@ -90,6 +88,7 @@ def getcitybynameapp(cityname):
 			json_fixed['weather'] = []
 			json_fixed['description'] = []
 			json_fixed['time'] = []
+			#Aggiungere commento su 34
 			for x in range (0, 34):
 				json_fixed['temp'].append(json_data['list'][(x)]['main']['temp'])
 				json_fixed['weather'].append(json_data['list'][(x)]['weather'][0]['main'])
@@ -97,9 +96,8 @@ def getcitybynameapp(cityname):
 				json_fixed['time'].append(json_data['list'][(x)]['dt_txt'])
 			json_fixed['cache_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			cache.append(json_fixed)
-			#pprint.pprint("Result taken from Openweather server!")
 			print hilite("Result taken from Openweather server!",0,1)
-			return json.dumps(json_fixed) 
+			return json.dumps(json_fixed)
 		except urllib2.URLError as e:
 			return "{\"cod\": 500}"
 
@@ -108,7 +106,13 @@ def getcitybynameapp(cityname):
 def show_cache():
 	return json.dumps(cache)
 
-# Function to check if the data are already stored in the cache
+# Function to clear the cache on request while the server is still running. Used for demonstration purposes only.
+@app.route("/clear_cache")
+def clear_cache():
+	del cache[:]
+	return "<h1>The Cache was correctly cleared</h1>"
+
+# Function to check if the data are already stored in the cache. Informations older that 30 minutes will be deleted and requested again from Openweather
 def check_cache(request_string):
 	current = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 	current_time = time.strptime(current, "%Y-%m-%d %H:%M:%S")

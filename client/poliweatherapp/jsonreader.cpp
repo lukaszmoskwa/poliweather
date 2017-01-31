@@ -14,10 +14,13 @@ JsonReader::JsonReader(MainWindow* uiWindow, std::string url)
     manager->get(QNetworkRequest(QUrl(url.c_str())));
 }
 
+/* Function used to get data from a given string */
 QString JsonReader::decode(std::string request){
     return QString(tree.get<std::string>(request).c_str());
 }
 
+/* Function used to get data from a given string as list. The difference between decodeList and decode
+ * is the second parameter, index */
 QString JsonReader::decodeList(std::string request, int index){
     std::vector<std::string> dataVector = {};
     BOOST_FOREACH(boost::property_tree::ptree::value_type &v, tree.get_child(request)) {
@@ -25,7 +28,6 @@ QString JsonReader::decodeList(std::string request, int index){
         dataVector.push_back(v.second.data());
     }
     return QString(dataVector.at(index).c_str());
-    //return QString(tree.get<std::string>(request, index).c_str());
 }
 
 void JsonReader::replyFinished(QNetworkReply *reply){
@@ -43,7 +45,6 @@ void JsonReader::replyFinished(QNetworkReply *reply){
         std::stringstream stream(((std::string)document.toJson()).c_str());
         boost::property_tree::read_json(stream, tree);
 
-        //qDebug() << map["coord"].toMap()["lat"].toDouble();
         uiWindow->updateWindow();
     }
 }
