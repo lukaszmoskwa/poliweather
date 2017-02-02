@@ -84,7 +84,7 @@ QPixmap MainWindow::getIcona(QString stringa){
 // Function executed when the Check button is pushed
 void MainWindow::on_pushButton_clicked()
 {
-    readerWeather = new JsonReader(this, "http://localhost:5000/app/city/" + ui->lineEdit->text().toStdString());
+    readerWeather = new JsonReader(this, "http://poliweather.tk/app/city/" + ui->lineEdit->text().toStdString());
 }
 
 // Main update function called to display informations retrieved

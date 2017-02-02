@@ -88,8 +88,7 @@ def getcitybynameapp(cityname):
 			json_fixed['weather'] = []
 			json_fixed['description'] = []
 			json_fixed['time'] = []
-			#Aggiungere commento su 34
-			for x in range (0, 34):
+			for x in range(0, len(json_data['list'])):
 				json_fixed['temp'].append(json_data['list'][(x)]['main']['temp'])
 				json_fixed['weather'].append(json_data['list'][(x)]['weather'][0]['main'])
 				json_fixed['description'].append(json_data['list'][(x)]['weather'][0]['description'])
