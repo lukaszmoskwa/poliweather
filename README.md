@@ -77,6 +77,7 @@ The client was written natively for Linux, but it is also compiled for Windows (
 
 As you can see in the screenshot above I decided to display the current forecast in a main panel showing as well the temperature, wind speed and humidity status. Then you can see the forecast of the following 3 days in the scroll panel.
 
+Link to MXE: http://mxe.cc/
 ##  Web Service
 
 Added a default template to start working with (Xeon Template). I'm using flask to run the webservice as well
