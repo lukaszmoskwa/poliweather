@@ -86,6 +86,8 @@ Web Service screenshots:
 
 ![](http://i.imgur.com/EgxQHKg.png)
 
+You can also change the way the things are displayed reading the comments in the code 
+
 ---
 
 ![](https://s17.postimg.org/7cbxdcyal/pw_screen.png)
