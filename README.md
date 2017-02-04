@@ -80,6 +80,8 @@ As you can see in the screenshot above I decided to display the current forecast
 Link to MXE: http://mxe.cc/
 ##  Web Service
 
+Currently hosted on: http://poliweather.tk
+
 Added a default template to start working with (Xeon Template). I'm using flask to run the webservice as well
 
 Web Service screenshots:
